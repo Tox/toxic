@@ -367,6 +367,10 @@ void redraw_conference_win(ToxWindow *self)
 
     scrollok(ctx->history, 0);
     wmove(self->window, y2 - CURS_Y_OFFSET, 0);
+
+    if (!self->scroll_pause) {
+        line_info_reset_start(self, ctx->hst);
+    }
 }
 
 static void conference_onConferenceMessage(ToxWindow *self, Toxic *toxic, uint32_t conferencenum, uint32_t peernum,

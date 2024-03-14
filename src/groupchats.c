@@ -945,6 +945,10 @@ void redraw_groupchat_win(ToxWindow *self)
     wmove(self->window, y2 - CURS_Y_OFFSET, 0);
 
     self->x = 0;  // trigger the statusbar to be re-sized
+
+    if (!self->scroll_pause) {
+        line_info_reset_start(self, ctx->hst);
+    }
 }
 
 static void group_onAction(ToxWindow *self, Toxic *toxic, uint32_t groupnumber, uint32_t peer_id, const char *action,
