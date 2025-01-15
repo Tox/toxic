@@ -864,6 +864,7 @@ static void print_usage(void)
     fprintf(stderr, "  -p, --SOCKS5-proxy       Use SOCKS5 proxy: Requires [IP] [port]\n");
     fprintf(stderr, "  -P, --HTTP-proxy         Use HTTP proxy: Requires [IP] [port]\n");
     fprintf(stderr, "  -r, --namelist           Use specified name lookup server list\n");
+    fprintf(stderr, "  -s, --netstats           Dump network stats to log on exit: Requires [path]\n");
     fprintf(stderr, "  -t, --force-tcp          Force toxic to use a TCP connection (use with proxies)\n");
     fprintf(stderr, "  -T, --tcp-server         Act as a TCP relay server: Requires [port]\n");
     fprintf(stderr, "  -u, --unencrypt-data     Unencrypt an encrypted data file\n");
@@ -898,6 +899,7 @@ static void parse_args(Toxic *toxic, Init_Queue *init_q, int argc, char *argv[])
         {"help", no_argument, 0, 'h'},
         {"noconnect", no_argument, 0, 'o'},
         {"namelist", required_argument, 0, 'r'},
+        {"netstats", required_argument, 0, 's'},
         {"force-tcp", no_argument, 0, 't'},
         {"tcp-server", required_argument, 0, 'T'},
         {"SOCKS5-proxy", required_argument, 0, 'p'},
@@ -907,7 +909,7 @@ static void parse_args(Toxic *toxic, Init_Queue *init_q, int argc, char *argv[])
         {NULL, no_argument, NULL, 0},
     };
 
-    const char *opts_str = "4bdehLotuxvc:f:l:n:r:p:P:T:";
+    const char *opts_str = "4bdehLotuxvc:f:l:n:r:s:p:P:T:";
     int opt = 0;
     int indexptr = 0;
 
@@ -1100,6 +1102,25 @@ static void parse_args(Toxic *toxic, Init_Queue *init_q, int argc, char *argv[])
                 }
 
                 run_opts->tcp_port = port;
+                break;
+            }
+
+            case 's': {
+                if (optarg == NULL) {
+                    init_queue_add(init_q, "Invalid argument for option: %d", opt);
+                    break;
+                }
+
+                run_opts->netprof_fp = fopen(optarg, "w");
+
+                if (run_opts->netprof_fp != NULL) {
+                    init_queue_add(init_q, "Network profile logging enabled. Logging to file: '%s'", optarg);
+                    run_opts->netprof_log_dump = true;
+                    run_opts->netprof_start_time = time(NULL);
+                } else {
+                    init_queue_add(init_q, "Failed to open file '%s' for network profile logging.", optarg);
+                }
+
                 break;
             }
 

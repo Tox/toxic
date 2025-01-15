@@ -70,6 +70,9 @@ ui = {
   // true to show peer connection change messages in groups
   show_group_connection_msg=true;
 
+  // true to show network information in the UI home window
+  show_network_info=true;
+
   // How often in days to update the DHT nodes list. (0 to disable updates)
   nodeslist_update_freq=7;
 

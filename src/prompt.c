@@ -22,6 +22,7 @@
 #include "line_info.h"
 #include "log.h"
 #include "misc_tools.h"
+#include "netprof.h"
 #include "notify.h"
 #include "prompt.h"
 #include "settings.h"
@@ -309,6 +310,77 @@ static bool prompt_onKey(ToxWindow *self, Toxic *toxic, wint_t key, bool ltr)
     return input_ret;
 }
 
+#define NET_INFO_REFRESH_INTERVAL 1
+static void draw_network_info(const Tox *tox, StatusBar *stb)
+{
+    WINDOW *win = stb->topline;
+
+    wattron(win, COLOR_PAIR(BAR_TEXT));
+    wprintw(win, "%s", stb->network_info);
+    wattroff(win, COLOR_PAIR(BAR_TEXT));
+
+    if (!timed_out(stb->time_last_refreshed, NET_INFO_REFRESH_INTERVAL)) {
+        return;
+    }
+
+    stb->time_last_refreshed = get_unix_time();
+
+    const uint64_t up_bytes = netprof_get_bytes_up(tox);
+    const uint64_t down_bytes = netprof_get_bytes_down(tox);
+
+    const uint64_t up_delta = (up_bytes - stb->up_bytes) / NET_INFO_REFRESH_INTERVAL;
+    const uint64_t down_delta = (down_bytes - stb->down_bytes) / NET_INFO_REFRESH_INTERVAL;
+
+    stb->up_bytes = up_bytes;
+    stb->down_bytes = down_bytes;
+
+    float up = up_bytes;
+    float down = down_bytes;
+    const char *up_unit = "bytes";
+    const char *down_unit = "bytes";
+
+    if (up_bytes > MiB) {
+        up /= (float)MiB;
+        up_unit = "MiB";
+    } else if (up_bytes > KiB) {
+        up /= (float)KiB;
+        up_unit = "KiB";
+    }
+
+    if (down_bytes > MiB) {
+        down /= (float)MiB;
+        down_unit = "MiB";
+    } else if (down_bytes > KiB) {
+        down /= (float)KiB;
+        down_unit = "KiB";
+    }
+
+    float up_bps = up_delta;
+    float down_bps = down_delta;
+    const char *up_bps_unit = "b/s";
+    const char *down_bps_unit = "b/s";
+
+    if (up_bps > MiB) {
+        up_bps /= (float)MiB;
+        up_bps_unit = "MiB/s";
+    } else if (up_bps > KiB) {
+        up_bps /= (float)KiB;
+        up_bps_unit = "KiB/s";
+    }
+
+    if (down_bps > MiB) {
+        down_bps /= (float)MiB;
+        down_bps_unit = "MiB/s";
+    } else if (down_bps > KiB) {
+        down_bps /= (float)KiB;
+        down_bps_unit = "KiB/s";
+    }
+
+    snprintf(stb->network_info, sizeof(stb->network_info),
+             " | [Up: %.1f%s (%.1f%s) | Down: %.1f%s (%.1f%s)]", up, up_unit, up_bps, up_bps_unit,
+             down, down_unit, down_bps, down_bps_unit);
+}
+
 static void prompt_onDraw(ToxWindow *self, Toxic *toxic)
 {
     if (toxic == NULL || self == NULL) {
@@ -469,6 +541,10 @@ static void prompt_onDraw(ToxWindow *self, Toxic *toxic)
         wprintw(statusbar->topline, "%s", statusbar->statusmsg);
         pthread_mutex_unlock(&Winthread.lock);
         wattroff(statusbar->topline, COLOR_PAIR(BAR_TEXT));
+    }
+
+    if (toxic->c_config->show_network_info) {
+        draw_network_info(toxic->tox, statusbar);
     }
 
     int y;

@@ -62,6 +62,7 @@ static struct ui_strings {
     const char *show_welcome_msg;
     const char *show_connection_msg;
     const char *show_group_connection_msg;
+    const char *show_network_info;
     const char *nodeslist_update_freq;
     const char *autosave_freq;
 
@@ -102,6 +103,7 @@ static struct ui_strings {
     "show_welcome_msg",
     "show_connection_msg",
     "show_group_connection_msg",
+    "show_network_info",
     "nodeslist_update_freq",
     "autosave_freq",
     "line_padding",
@@ -141,6 +143,7 @@ static void ui_defaults(Client_Config *settings)
     settings->show_welcome_msg = true;
     settings->show_connection_msg = true;
     settings->show_group_connection_msg = true;
+    settings->show_network_info = false;
     settings->nodeslist_update_freq = 1;
     settings->autosave_freq = 600;
 
@@ -818,6 +821,10 @@ int settings_load_main(Client_Config *s, const Run_Options *run_opts)
 
         if (config_setting_lookup_bool(setting, ui_strings.show_group_connection_msg, &bool_val)) {
             s->show_group_connection_msg = bool_val != 0;
+        }
+
+        if (config_setting_lookup_bool(setting, ui_strings.show_network_info, &bool_val)) {
+            s->show_network_info = bool_val != 0;
         }
 
         config_setting_lookup_int(setting, ui_strings.history_size, &s->history_size);

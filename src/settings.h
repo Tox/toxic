@@ -35,6 +35,7 @@ typedef struct Client_Config {
     bool show_connection_msg;
     bool show_group_connection_msg;
     bool show_timestamps;
+    bool show_network_info;
 
     int bell_on_message;
     int bell_on_filetrans;

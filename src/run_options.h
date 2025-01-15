@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>  // needed for FILE
 #include <stdint.h>
+#include <time.h>
 
 #include "toxic_constants.h"
 
@@ -47,6 +48,10 @@ typedef struct Run_Options {
 
     bool logging;
     FILE *log_fp;
+
+    bool netprof_log_dump;
+    FILE *netprof_fp;
+    time_t netprof_start_time;
 
     char proxy_address[256];
     uint8_t proxy_type;

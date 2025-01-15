@@ -14,7 +14,7 @@ LDFLAGS += ${USER_LDFLAGS}
 
 OBJ = autocomplete.o avatars.o bootstrap.o chat.o chat_commands.o conference.o configdir.o curl_util.o execute.o
 OBJ += file_transfers.o friendlist.o global_commands.o conference_commands.o groupchats.o groupchat_commands.o help.o
-OBJ += init_queue.o input.o line_info.o log.o main.o message_queue.o misc_tools.o name_lookup.o notify.o prompt.o qr_code.o
+OBJ += init_queue.o input.o line_info.o log.o main.o message_queue.o misc_tools.o name_lookup.o netprof.o notify.o prompt.o qr_code.o
 OBJ += settings.o term_mplex.o toxic.o toxic_strings.o windows.o
 
 # Check if debug build is enabled

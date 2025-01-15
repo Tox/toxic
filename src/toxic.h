@@ -32,8 +32,8 @@
 #define static_assert _Static_assert
 #endif
 
-#include <stdbool.h>
 #include <curses.h>
+#include <stdbool.h>
 
 #include <tox/tox.h>
 

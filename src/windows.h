@@ -245,6 +245,12 @@ struct StatusBar {
     Tox_Connection connection;
     char topic[TOX_GROUP_MAX_TOPIC_LENGTH + 1];
     size_t topic_len;
+
+    /* network info */
+    uint64_t up_bytes;
+    uint64_t down_bytes;
+    uint64_t time_last_refreshed;
+    char network_info[MAX_STR_SIZE];
 };
 
 #ifdef AUDIO
