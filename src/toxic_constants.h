@@ -72,6 +72,33 @@
 #define T_KEY_C_DOWN     0x20D    /* ctrl-down arrow */
 #define T_KEY_TAB        0x09     /* TAB key */
 
+#define T_KEY_A_A        0x301
+#define T_KEY_A_B        0x302
+#define T_KEY_A_C        0x303
+#define T_KEY_A_D        0x304
+#define T_KEY_A_E        0x305
+#define T_KEY_A_F        0x306
+#define T_KEY_A_G        0x307
+#define T_KEY_A_H        0x308
+#define T_KEY_A_I        0x309
+#define T_KEY_A_J        0x30a
+#define T_KEY_A_K        0x30b
+#define T_KEY_A_L        0x30c
+#define T_KEY_A_M        0x30d
+#define T_KEY_A_N        0x30e
+#define T_KEY_A_O        0x30f
+#define T_KEY_A_P        0x310
+#define T_KEY_A_Q        0x311
+#define T_KEY_A_R        0x312
+#define T_KEY_A_S        0x313
+#define T_KEY_A_T        0x314
+#define T_KEY_A_U        0x315
+#define T_KEY_A_V        0x316
+#define T_KEY_A_W        0x317
+#define T_KEY_A_X        0x318
+#define T_KEY_A_Y        0x319
+#define T_KEY_A_Z        0x31a
+
 #define ONLINE_CHAR  "o"
 #define OFFLINE_CHAR "o"
 

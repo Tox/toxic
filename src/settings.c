@@ -340,8 +340,28 @@ static int key_parse(const char **bind)
         }
     }
 
+    if (strncasecmp(*bind, "alt", 3) == 0) {
+            return 0x300+toupper(bind[0][4]) - 'A' + 1;
+    }
+
     if (strncasecmp(*bind, "tab", 3) == 0) {
         return T_KEY_TAB;
+    }
+
+    if (strncasecmp(*bind, "up", 2) == 0) {
+        return KEY_UP;
+    }
+
+    if (strncasecmp(*bind, "down", 4) == 0) {
+        return KEY_DOWN;
+    }
+
+    if (strncasecmp(*bind, "right", 5) == 0) {
+        return KEY_RIGHT;
+    }
+
+    if (strncasecmp(*bind, "left", 4) == 0) {
+        return KEY_LEFT;
     }
 
     if (strncasecmp(*bind, "page", 4) == 0) {
